@@ -2,6 +2,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let contacts = [
     {
         id: 1, 
@@ -24,6 +26,7 @@ let contacts = [
         number: "055-4758394"
     }
 ]
+
 const displayInfo = () => {
     const contactsAmount = contacts.length
     const now = new Date().toString()
@@ -49,6 +52,28 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.get('/api/persons', (req, res) => {
     res.json(contacts)
+})
+
+const createId = () => {
+    const newId = Math.floor((Math.random() * 1000))
+    const findId = contacts.find(p => p.id === newId)
+        ? createId()
+        : newId
+    return newId
+}
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+
+    const contact = {
+        id: createId(),
+        name: body.name,
+        number: body.number
+    }
+
+    contacts = contacts.concat(contact)
+    res.json(contact)
+
 })
 
 app.delete('/api/persons/:id', (req, res) => {
