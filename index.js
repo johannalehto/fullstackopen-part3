@@ -1,4 +1,3 @@
-// const { response } = require('express')
 const express = require('express')
 const app = express()
 
@@ -6,22 +5,22 @@ app.use(express.json())
 
 let contacts = [
     {
-        id: 1, 
+        id: 1,
         name: "Arto Hellas",
         number: "040-123456"
     },
     {
-        id: 2, 
+        id: 2,
         name: "Ada Lovelace",
         number: "040-5039452"
     },
     {
-        id: 3, 
+        id: 3,
         name: "Dan Abramov",
         number: "040-092835"
     },
     {
-        id: 4, 
+        id: 4,
         name: "Mary Poppendick",
         number: "055-4758394"
     }
@@ -31,7 +30,7 @@ const displayInfo = () => {
     const contactsAmount = contacts.length
     const now = new Date().toString()
 
-    return `<p>Phonebook has info for ${contactsAmount}</p> 
+    return `<p>Phonebook has info for ${contactsAmount} people</p> 
             <p>${now}</p>`
 }
 
@@ -65,6 +64,24 @@ const createId = () => {
 app.post('/api/persons', (req, res) => {
     const body = req.body
 
+    if (!body.name) {
+        return res.status(400).json({
+            error: "name missing"
+        })
+    }
+
+    if (!body.number) {
+        return res.status(400).json({
+            error: "number missing"
+        })
+    }
+
+    if (contacts.find(c => c.name === body.name)) {
+        return res.status(400).json({
+            error: "name already in contacts"
+        })
+    }
+
     const contact = {
         id: createId(),
         name: body.name,
@@ -82,8 +99,6 @@ app.delete('/api/persons/:id', (req, res) => {
 
     res.status(204).end()
 })
-    
-
 
 
 const PORT = 3001
