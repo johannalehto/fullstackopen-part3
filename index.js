@@ -2,7 +2,7 @@
 const express = require('express')
 const app = express()
 
-let persons = [
+let contacts = [
     {
         id: 1, 
         name: "Arto Hellas",
@@ -24,6 +24,20 @@ let persons = [
         number: "055-4758394"
     }
 ]
+const displayInfo = () => {
+    const contactsAmount = contacts.length
+    const now = new Date().toString()
+
+    return `<p>Phonebook has info for ${contactsAmount}</p> 
+            <p>${now}</p>`
+}
+
+app.get('/info', (req, res) => {
+    res.send(displayInfo())
+
+})
+
+
 
 app.get('/api/persons', (req, res) => {
     res.json(persons)
