@@ -37,10 +37,20 @@ app.get('/info', (req, res) => {
 
 })
 
+app.get('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const contact = contacts.find(c => c.id === id)
+    if (contact) {
+        res.json(contact)
+    } else {
+        res.status(404).end()
+    }
+})
+
 
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    res.json(contacts)
 })
 
 
