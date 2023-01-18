@@ -47,11 +47,18 @@ app.get('/api/persons/:id', (req, res) => {
     }
 })
 
-
-
 app.get('/api/persons', (req, res) => {
     res.json(contacts)
 })
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    contacts = contacts.filter(c => c.id !== id)
+
+    res.status(204).end()
+})
+    
+
 
 
 const PORT = 3001
